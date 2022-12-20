@@ -12,6 +12,7 @@ export const useAuthorStore = defineStore('authorStore', () => {
       );
 
       if (data) {
+        // console.log(data);
         return data;
       }
     } catch (error) {

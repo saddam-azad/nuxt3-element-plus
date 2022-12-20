@@ -1,5 +1,6 @@
-import Components from 'unplugin-vue-components/vite';
-import { ElementPlusResolver } from 'unplugin-vue-components/resolvers';
+// import Components from 'unplugin-vue-components/vite';
+// import { ElementPlusResolver } from 'unplugin-vue-components/resolvers';
+import ElementPlus from 'unplugin-element-plus/vite'
 
 export default defineNuxtConfig({
   // css
@@ -12,10 +13,11 @@ export default defineNuxtConfig({
 
   vite: {
     plugins: [
-      Components({
-        dts: true,
-        resolvers: [ElementPlusResolver()],
-      }),
+      // Components({
+      //   dts: true,
+      //   resolvers: [ElementPlusResolver()],
+      // }),
+      ElementPlus()
     ],
   },
 

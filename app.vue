@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import { ID_INJECTION_KEY } from 'element-plus';
-// import { useAuthorStore } from '~/stores/author';
+import { useAuthorStore } from '~/stores/author';
 
 import {
-  ElRow,
-  ElCol,
   ElButton,
   ElForm,
   ElFormItem,
   ElInput,
+  ElSelect,
+  ElOption,
   FormInstance,
   FormRules,
 } from 'element-plus';
@@ -18,14 +18,15 @@ provide(ID_INJECTION_KEY, {
   current: 0,
 });
 
+
+const authorStore = useAuthorStore();
+const authors = await authorStore.getAuthors();
+
+// const { authors } = await useAsyncData('authors', () =>
+//   $fetch('https://63a1958ba543280f775b0a50.mockapi.io/authors')
+// );
+
 const formRef = ref<FormInstance>();
-
-// const authorStore = useAuthorStore();
-// const authors = authorStore.getAuthors();
-
-const { authors } = await useAsyncData('authors', () =>
-  $fetch('https://63a1958ba543280f775b0a50.mockapi.io/authors')
-);
 
 const form = reactive({
   name: '',
@@ -34,15 +35,16 @@ const form = reactive({
     {
       id: '',
       name: '',
+      createdAt: ''
     },
   ],
 });
 
 async function changeAuthor(event) {
-  // const data = await $fetch(
-  //   'https://63a1958ba543280f775b0a50.mockapi.io/books'
-  // );
-  // form.branches = data.data;
+  const data = await $fetch(
+    'https://63a1958ba543280f775b0a50.mockapi.io/books'
+  );
+  form.books = data;
 }
 
 const rules = reactive<FormRules>({
@@ -74,6 +76,7 @@ const submit = async (formEl: FormInstance | undefined) => {
 
 <template>
   <div>
+    <ClientOnly>
     <el-form
       ref="formRef"
       :model="form"
@@ -95,15 +98,12 @@ const submit = async (formEl: FormInstance | undefined) => {
             v-for="author in authors"
             :key="author.id"
             :label="author.name"
-            :value="author.name"
+            :value="author.id"
           />
         </el-select>
       </el-form-item>
 
       <el-form-item label="Select book">
-        <div v-for="book in form.books" :key="book.name">
-          {{ book.name }}
-        </div>
         <el-select v-model="form.books" default-first-option>
           <el-option
             v-for="book in form.books"
@@ -117,5 +117,6 @@ const submit = async (formEl: FormInstance | undefined) => {
         <el-button type="primary" @click="submit(formRef)">Continue</el-button>
       </el-form-item>
     </el-form>
+    </ClientOnly>
   </div>
 </template>
