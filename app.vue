@@ -18,7 +18,6 @@ provide(ID_INJECTION_KEY, {
   current: 0,
 });
 
-
 const authorStore = useAuthorStore();
 const authors = await authorStore.getAuthors();
 
