@@ -18,6 +18,12 @@ provide(ID_INJECTION_KEY, {
   current: 0,
 });
 
+interface Book {
+  id: string,
+  name: string,
+  createdAt: Date
+}
+
 const authorStore = useAuthorStore();
 const authors = await authorStore.getAuthors();
 
@@ -35,12 +41,12 @@ const form = reactive({
       id: '',
       name: '',
       createdAt: ''
-    },
-  ],
+    }
+  ]
 });
 
 async function changeAuthor(event) {
-  const data = await $fetch(
+  const data: Array<Book> = await $fetch(
     'https://63a1958ba543280f775b0a50.mockapi.io/books'
   );
   form.books = data;
@@ -107,7 +113,8 @@ const submit = async (formEl: FormInstance | undefined) => {
           <el-option
             v-for="book in form.books"
             :key="book.id"
-            :value="book.name"
+            :label="book.name"
+            :value="book.id"
           />
         </el-select>
       </el-form-item>
