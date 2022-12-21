@@ -36,20 +36,16 @@ const formRef = ref<FormInstance>();
 const form = reactive({
   name: '',
   authors: authors,
-  books: [
-    {
-      id: '',
-      name: '',
-      createdAt: ''
-    }
-  ]
+  books: [] as Book[]
 });
 
 async function changeAuthor(event) {
-  const data: Array<Book> = await $fetch(
-    'https://63a1958ba543280f775b0a50.mockapi.io/books'
-  );
-  form.books = data;
+  try {
+    const data: Array<Book> = await $fetch('https://63a1958ba543280f775b0a50.mockapi.io/books');
+    form.books = data;
+  } catch (error) {
+    console.error(error);
+  }
 }
 
 const rules = reactive<FormRules>({
